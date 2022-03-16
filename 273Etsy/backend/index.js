@@ -6,7 +6,7 @@ var constants = require("./config.json");
 var cors = require('cors');
 const session = require('express-session');
 const app = express();
-const cookieParser = express("cocookie-parser");
+const cookieParser = express("cookie-parser");
 const multer = require('multer');
 
 
@@ -110,6 +110,66 @@ app.post("/addItems", async (req, res) => {
           else { res.send({ message: "success" }); } } );
     });
   } catch (err) { console.log(err); }
+});
+
+app.post("/getItems", (req, res) => {
+  // const id = req.params.id;
+  console.log("In get items");
+  db.query(
+    "select * from etsy.itemdetails",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send("success",result);
+      }
+    }
+  );
+});
+
+app.post("/register", (req, res) => {
+  const username = req.body.username;
+  console.log(username);
+  const email = req.body.email;
+  const password = req.body.password;
+
+  db.query(
+    "INSERT INTO Users (name, email, password) VALUES (?, ?, ?)",
+    [username, email, password],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send({ success: true, result });
+      }
+    }
+  );
+});
+
+app.get("/signin", (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+
+app.post("/getUsername/:id", (req, res) => {
+  const id = req.params.id;
+  db.query(
+    "select * from user WHERE id=?",
+    [ id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        res.send("success",result);
+      }
+    }
+  );
 });
 
 app.put("/updateItems", (req,res) =>{
