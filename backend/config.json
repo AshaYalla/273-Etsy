@@ -1,0 +1,11 @@
+{
+    "DB" :{
+        "hostname" : "etsy202database.ce4xr1p64j3q.us-east-1.rds.amazonaws.com",
+        "username" : "admin",
+        "password" : "Govardhan",
+        "port" : "3306",
+        "database" : "etsy202"
+    },
+    "secret" : "",
+    "frontend" : "http://localhost:3000/"
+}
