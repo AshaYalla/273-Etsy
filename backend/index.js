@@ -204,5 +204,94 @@ app.put("/updateItems", (req,res) =>{
   catch (err) {console.log(err);}
 });
 
+app.put("/updateCartQuantity/:userId", (req, res) => {
+  const userId = req.params.userId;
+  // const userId = req.params.id;
+  const itemId = req.body.itemId;
+  const qty = req.body.qty;
+
+  console.log("In update cart");
+  console.log(itemId);
+  console.log(qty);
+  // console.log(id);
+
+  db.query(
+    "UPDATE Carts SET qty = ? WHERE itemId=? AND userId = ?",
+    [qty, itemId, userId],
+    (err, result) => {
+      console.log(result);
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send({ success: true, result });
+      }
+    }
+  );
+});
+
+app.get("/getQtyFromCart/:userid/:itemId", (req, res) => {
+  const userId = req.params.userid;
+  const itemId = req.params.itemId;
+  console.log("Getting all cart products in home");
+  db.query(
+    "select qty from Carts where userId=? AND itemId=?",
+    [userId, itemId],
+    (err, result) => {
+      console.log(result);
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send({ success: true, result });
+      }
+    }
+  );
+});
+app.get("/getPurchases/:UserId", (req, res) => {
+  const userid = req.params.UserId;
+  console.log("Get purchased items");
+  db.query(
+    "SELECT * FROM Carts WHERE userId=? order by cartId desc limit 0, 1 ",
+    [userid],
+    (err, result) => {
+      console.log(result);
+      if (err) {
+        res.send(err);
+      } else {
+        res.send({ success: true, result });
+      }
+    }
+  );
+});
+
+app.put("/updateItemById/:itemId", (req, res) => {
+  const id = req.params.itemId;
+  // const userId = req.params.id;
+  const itemName = req.body.itemName;
+  const itemDescriprion = req.body.itemDescription;
+  const itemPrice = req.body.itemPrice;
+  const itemCount = req.body.itemCount;
+  const itemCategory = req.body.itemCategory;
+
+  console.log("In update item post");
+  console.log(itemDescriprion);
+  console.log(itemName);
+  console.log(id);
+
+  db.query(
+    "UPDATE Items SET itemName=?, itemPrice=?, itemDescription=?, itemCount=?, itemCategory=? WHERE itemId=?",
+    [itemName, itemPrice, itemDescriprion, itemCount, itemCategory, id],
+    (err, result) => {
+      console.log(result.itemName);
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send({ success: true, result });
+      }
+    }
+  );
+});
 app.listen(4001);
 db.end()
