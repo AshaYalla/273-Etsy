@@ -248,22 +248,22 @@ app.get("/getQtyFromCart/:userid/:itemId", (req, res) => {
     }
   );
 });
-app.get("/getPurchases/:UserId", (req, res) => {
-  const userid = req.params.UserId;
-  console.log("Get purchased items");
-  db.query(
-    "SELECT * FROM Carts WHERE userId=? order by cartId desc limit 0, 1 ",
-    [userid],
-    (err, result) => {
-      console.log(result);
-      if (err) {
-        res.send(err);
-      } else {
-        res.send({ success: true, result });
-      }
-    }
-  );
-});
+// app.get("/getPurchases/:UserId", (req, res) => {
+//   const userid = req.params.UserId;
+//   console.log("Get purchased items");
+//   db.query(
+//     "SELECT * FROM Carts WHERE userId=? order by cartId desc limit 0, 1 ",
+//     [userid],
+//     (err, result) => {
+//       console.log(result);
+//       if (err) {
+//         res.send(err);
+//       } else {
+//         res.send({ success: true, result });
+//       }
+//     }
+//   );
+// });
 
 app.put("/updateItemById/:itemId", (req, res) => {
   const id = req.params.itemId;
